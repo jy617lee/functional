@@ -25,19 +25,12 @@ const addItemToCart = (cart: Cart, item: Item): void => {
 
 const updateShippingIcons = (cart: Cart): void => {
   const buyButtons = getBuyButtonsDom()
-  for(let i = 0; i < buyButtons.length; i++) {
-    const button = buyButtons[i]
-    showFreeShippingIcon(button, isFreeShipping([...cart, button.item]))
-  }
+  buyButtons.forEach(button => showFreeShippingIcon(button, isFreeShipping([...cart, button.item])))
 }
 
 // DOM 업데이트
 const showFreeShippingIcon = (button: any, isShow: boolean): void => {
-  if (isShow) {
-    button.showFreeShippingIcon()
-  } else { 
-    button.hideFreeShippingIcon()
-  }
+  isShow ? button.showFreeShippingIcon() : button.hideFreeShippingIcon()
 }
 
 const setCartTotalDom = (total: number): void => {}
