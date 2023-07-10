@@ -14,7 +14,7 @@ let shoppingCartTotal = 0
 
 // 액션
 function addItemToCart(name: string, price: number): void {
-  const item = makeCartItem(name, price)
+  const item = {name, price}
   shoppingCart = addItem(shoppingCart, item)
   const total = calcTotal(shoppingCart)
   setCartTotalDom(total)
@@ -55,11 +55,7 @@ function getsFreeShippingWithItem(cart: Item[], item: Item): boolean {
 }
 
 function addItem(cart: Item[], item: Item): Item[] {
-  return addElementLast(cart, item)
-}
-
-function makeCartItem(name: string, price: number): Item {
-  return {name, price}
+  return [...cart, item]
 }
 
 function calcTotal(cart: Item[]): number {
@@ -77,8 +73,4 @@ function getsFreeShipping(cart: Item[]) {
 
 function calcTax(amount: number): number {
   return amount * 0.10
-}
-
-function addElementLast<T>(array: T[], elem: T): T[] {
-  return [...array, elem]
 }
