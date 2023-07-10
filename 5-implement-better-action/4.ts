@@ -13,10 +13,11 @@ type BuyButton = {
 function addItemToCart(cart: Item[], item: Item): Item[] {
   const newCart = addItem(cart, item)
   const newTotal = calcTotal(newCart)
+  const newTax = calcTax(newTotal)
 
   setCartTotalDom(newTotal)
   updateShippingIcons(newCart)
-  updateTaxDom(newTotal)
+  setTaxDom(newTax)
 
   return newCart
 }
@@ -30,10 +31,6 @@ function updateShippingIcons(cart: Item[]): void {
 
 function setFreeShippingIcon(button: BuyButton, isShown: boolean): void {
   isShown ? button.showFreeShippingIcon() : button.hideFreeShippingIcon()
-}
-
-function updateTaxDom(total: number): void {
-  setTaxDom(calcTax(total))
 }
 
 function setCartTotalDom(total: number): void {}
