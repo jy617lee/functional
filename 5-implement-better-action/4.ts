@@ -23,21 +23,14 @@ function addItemToCart(name: string, price: number): void {
 }
 
 function updateShippingIcons(cart: Item[]): void {
-  const buttons = getBuyButtonsDom()
-  for(let i = 0; i < buttons.length; i++) {
-    const button = buttons[i]
-    const item = button.item
-    const hasFreeShipping = getsFreeShippingWithItem(cart, item)
+  getBuyButtonsDom().forEach(button => {
+    const hasFreeShipping = getsFreeShippingWithItem(cart, button.item)
     setFreeShippingIcon(button, hasFreeShipping)
-  }
+  })
 }
 
 function setFreeShippingIcon(button: BuyButton, isShown: boolean): void {
-  if(isShown) {
-    button.showFreeShippingIcon()
-  } else {
-    button.hideFreeShippingIcon()
-  }
+  isShown ? button.showFreeShippingIcon() : button.hideFreeShippingIcon()
 }
 
 function updateTaxDom(total: number): void {
@@ -50,8 +43,7 @@ function getBuyButtonsDom(): BuyButton[] {return []}
 
 // 계산
 function getsFreeShippingWithItem(cart: Item[], item: Item): boolean {
-  const newCart = addItem(cart, item)
-  return getsFreeShipping(newCart)
+  return getsFreeShipping(addItem(cart, item))
 }
 
 function addItem(cart: Item[], item: Item): Item[] {
@@ -59,12 +51,7 @@ function addItem(cart: Item[], item: Item): Item[] {
 }
 
 function calcTotal(cart: Item[]): number {
-  let total = 0
-  for(let i = 0; i < cart.length; i++) {
-    const item = cart[i]
-    total += item.price
-  }
-  return total
+  return cart.reduce((total, item) => total + item.price, 0)
 }
 
 function getsFreeShipping(cart: Item[]) {
