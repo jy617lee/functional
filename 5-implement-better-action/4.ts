@@ -24,7 +24,7 @@ function addItemToCart(cart: Item[], item: Item): Item[] {
 
 function updateShippingIcons(cart: Item[]): void {
   getBuyButtonsDom().forEach(button => {
-    const hasFreeShipping = getsFreeShippingWithItem(cart, button.item)
+    const hasFreeShipping = getsFreeShipping(addItem(cart, button.item))
     setFreeShippingIcon(button, hasFreeShipping)
   })
 }
@@ -38,8 +38,8 @@ function setTaxDom(tax: number): void {}
 function getBuyButtonsDom(): BuyButton[] {return []}
 
 // 계산
-function getsFreeShippingWithItem(cart: Item[], item: Item): boolean {
-  return getsFreeShipping(addItem(cart, item))
+function getsFreeShipping(cart: Item[]) {
+  return calcTotal(cart) >= 20
 }
 
 function addItem(cart: Item[], item: Item): Item[] {
@@ -48,10 +48,6 @@ function addItem(cart: Item[], item: Item): Item[] {
 
 function calcTotal(cart: Item[]): number {
   return cart.reduce((total, item) => total + item.price, 0)
-}
-
-function getsFreeShipping(cart: Item[]) {
-  return calcTotal(cart) >= 20
 }
 
 function calcTax(amount: number): number {
