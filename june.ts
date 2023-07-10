@@ -1,27 +1,29 @@
 // 데이터
 const FREE_SHIPPING_AMOUNT = 20
 const TAX_RATE = 0.1
-interface Item {
-  name: string
-  price: number
+type Cart = Item[]
+type Item = {
+  readonly name: string
+  readonly price: number
 }
 
 // 계산
-const calcTotalPrice = (cart: Item[]): number => 
+const calcTotalPrice = (cart: Cart): number => 
   cart.reduce((total: number, item: Item) => total + item.price, 0)
-const isFreeShipping = (cart: Item[]): boolean => calcTotalPrice(cart) >= FREE_SHIPPING_AMOUNT
+const isFreeShipping = (cart: Cart): boolean => calcTotalPrice(cart) >= FREE_SHIPPING_AMOUNT
 const calcTax = (total: number): number => total * TAX_RATE
 
 // 액션
-const addItemToCart = (cart: Item[], item: Item): void => {
+const addItemToCart = (cart: Cart, item: Item): void => {
   cart = [...cart, item]
   const total = calcTotalPrice(cart)
+  const tax = calcTax(total)
   setCartTotalDom(total)
   updateShippingIcons(cart)
-  updateTaxDom(total)
+  setTaxDom(tax)
 }
 
-const updateShippingIcons = (cart: Item[]): void => {
+const updateShippingIcons = (cart: Cart): void => {
   const buyButtons = getBuyButtonsDom()
   for(let i = 0; i < buyButtons.length; i++) {
     const button = buyButtons[i]
@@ -38,5 +40,4 @@ const showFreeShippingIcon = (button: any, isShow: boolean): void => {
   }
 }
 
-const updateTaxDom = (cartTotal: number): void => setTaxDom(calcTax(cartTotal))
 const setCartTotalDom = (total: number): void => {}
