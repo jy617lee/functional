@@ -6,29 +6,27 @@ interface Item {
   price: number
 }
 
-// 전역변수
-let shoppingCart: Item[] = []
-let shoppingCartTotal: number = 0
-
 // 계산
 const calcTotalPrice = (cart: Item[]): number => 
   cart.reduce((total: number, item: Item) => total + item.price, 0)
-const isFreeShipping = (total: number, newItem: Item): boolean => 
-  total + newItem.price >= FREE_SHIPPING_AMOUNT
-const calculateTax = (total: number, taxRate: number): number => total * taxRate
-const addItem = (cart: Item[], item: Item) => [...cart, item]
+const isFreeShipping = (cart: Item[]): boolean => calcTotalPrice(cart) >= FREE_SHIPPING_AMOUNT
+const calculateTax = (total: number): number => total * TAX_RATE
 
 // 액션
-const addItemToCart = (item: Item) => {
-  shoppingCart.push(item)
-  calcCartTotal()
+const addItemToCart = (cart: Item[], item: Item) => {
+  cart.push(item)
+  const total = calcTotalPrice(cart)
+  setCartTotalDom(total)
+  updateShippingIcons(cart)
+  updateTaxDom(total)
 }
 
-const updateShippingIcons = () => {
+const updateShippingIcons = (cart: Item[]) => {
   const buyButtons = getBuyButtonsDom()
   for(let i = 0; i < buyButtons.length; i++) {
     const button = buyButtons[i]
-    if (isFreeShipping(shoppingCartTotal, button.item)) {
+    const newCart = [...cart, item]
+    if (isFreeShipping(newCart)) {
       button.showFreeShippingIcon()
     } else { 
       button.hideFreeShippingIcon()
@@ -36,11 +34,5 @@ const updateShippingIcons = () => {
   }
 }
 
-const updateTaxDom = () => setTaxDom(calculateTax(shoppingCartTotal, TAX_RATE))
-
-const calcCartTotal = () => {
-  shoppingCartTotal = calcTotalPrice(shoppingCart)
-  setCartTotalDom()
-  updateShippingIcons()
-  updateTaxDom()
-}
+const updateTaxDom = (cartTotal: number) => setTaxDom(calculateTax(cartTotal))
+const setCartTotalDom = (total: number) => {}
