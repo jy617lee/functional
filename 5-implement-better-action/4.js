@@ -3,18 +3,23 @@ let shoppingCartTotal = 0
 
 // 액션
 function addItemToCart(name, price) {
-  shoppingCart = calcTotal(shoppingCart, name, price)
+  shoppingCart = addItem(shoppingCart, name, price)
+  calcCartTotal()
+}
+
+function calcCartTotal() {
+  shoppingCartTotal = calcTotal(shoppingCart)
   setCartTotalDom()
-  updateShippingIcons()
+  updateShippingIcons(shoppingCart)
   updateTaxDom()
 }
 
-function updateShippingIcons() {
+function updateShippingIcons(cart) {
   const buttons = getBuyBottomsDom()
   for(let i = 0; i < buttons.length; i++) {
     const button = buttons[i];
     const item = button.item;
-    const newCart = addItem(shoppingCart, item.name, item.price)
+    const newCart = addItem(cart, item.name, item.price)
     if (getsFreeShipping(newCart)) {
       button.showFreeShippingIcon()
     } else {
