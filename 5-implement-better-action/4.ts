@@ -9,17 +9,16 @@ type BuyButton = {
   hideFreeShippingIcon: () => void
 }
 
-let shoppingCart: Item[] = []
-let shoppingCartTotal = 0
-
 // 액션
-function addItemToCart(name: string, price: number): void {
-  const item = {name, price}
-  shoppingCart = addItem(shoppingCart, item)
-  const total = calcTotal(shoppingCart)
-  setCartTotalDom(total)
-  updateShippingIcons(shoppingCart)
-  updateTaxDom(total)
+function addItemToCart(cart: Item[], item: Item): Item[] {
+  const newCart = addItem(cart, item)
+  const newTotal = calcTotal(newCart)
+
+  setCartTotalDom(newTotal)
+  updateShippingIcons(newCart)
+  updateTaxDom(newTotal)
+
+  return newCart
 }
 
 function updateShippingIcons(cart: Item[]): void {
