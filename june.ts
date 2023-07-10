@@ -12,15 +12,12 @@ const calcTotalPrice = (cart: Item[]): number =>
 const isFreeShipping = (cart: Item[]): boolean => calcTotalPrice(cart) >= FREE_SHIPPING_AMOUNT
 const calcTax = (total: number): number => total * TAX_RATE
 
-// 전역변수
-let shoppingCart: Item[] = []
-
 // 액션
-const addItemToCart = (item: Item): void => {
-  shoppingCart = [...shoppingCart, item]
-  const total = calcTotalPrice(shoppingCart)
+const addItemToCart = (cart: Item[], item: Item): void => {
+  cart = [...cart, item]
+  const total = calcTotalPrice(cart)
   setCartTotalDom(total)
-  updateShippingIcons(shoppingCart)
+  updateShippingIcons(cart)
   updateTaxDom(total)
 }
 
