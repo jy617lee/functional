@@ -14,7 +14,8 @@ function updateShippingIcons() {
   for(let i = 0; i < buttons.length; i++) {
     const button = buttons[i];
     const item = button.item;
-    if (getsFreeShipping(shippingCartTotal, item.price)) {
+    const newCart = addItem(shoppingCart, item.name, item.price)
+    if (getsFreeShipping(newCart)) {
       button.showFreeShippingIcon()
     } else {
       button.hideFreeShippingIcon()
@@ -27,10 +28,7 @@ function updateTaxDom() {
 }
 
 function addItem(cart, name, price) {
-  return [...cart].push({
-    name: name,
-    price: price
-  })
+  return [...cart, {name: name, price: price}]
 }
 
 // 계산
@@ -43,8 +41,8 @@ function calcTotal(cart) {
   return total
 }
 
-function getsFreeShipping(total, itemPrice) {
-  return itemPrice + total >= 20
+function getsFreeShipping(cart) {
+  return cartTotal(cart) >= 20
 }
 
 function calcTax(amount) {
