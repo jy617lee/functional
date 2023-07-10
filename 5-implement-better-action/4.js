@@ -1,16 +1,16 @@
-let shoppingCart = [];
-let shoppingCartTotal = 0;
+let shoppingCart = []
+let shoppingCartTotal = 0
 
 // 액션
 function addItemToCart(name, price) {
-  shoppingCart = calcTotal(shoppingCart, name, price);
-  setCartTotalDom();
-  updateShippingIcons();
-  updateTaxDom();
+  shoppingCart = calcTotal(shoppingCart, name, price)
+  setCartTotalDom()
+  updateShippingIcons()
+  updateTaxDom()
 }
 
 function updateShippingIcons() {
-  const buttons = getBuyBottomsDom();
+  const buttons = getBuyBottomsDom()
   for(let i = 0; i < buttons.length; i++) {
     const button = buttons[i];
     const item = button.item;
