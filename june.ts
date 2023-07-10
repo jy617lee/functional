@@ -16,15 +16,15 @@ const calcTax = (total: number): number => total * TAX_RATE
 let shoppingCart: Item[] = []
 
 // 액션
-const addItemToCart = (item: Item) => {
-  shoppingCart.push(item)
+const addItemToCart = (item: Item): void => {
+  shoppingCart = [...shoppingCart, item]
   const total = calcTotalPrice(shoppingCart)
   setCartTotalDom(total)
   updateShippingIcons(shoppingCart)
   updateTaxDom(total)
 }
 
-const updateShippingIcons = (cart: Item[]) => {
+const updateShippingIcons = (cart: Item[]): void => {
   const buyButtons = getBuyButtonsDom()
   for(let i = 0; i < buyButtons.length; i++) {
     const button = buyButtons[i]
@@ -33,7 +33,7 @@ const updateShippingIcons = (cart: Item[]) => {
 }
 
 // DOM 업데이트
-const showFreeShippingIcon = (button: any, isShow: boolean) => {
+const showFreeShippingIcon = (button: any, isShow: boolean): void => {
   if (isShow) {
     button.showFreeShippingIcon()
   } else { 
@@ -41,6 +41,5 @@ const showFreeShippingIcon = (button: any, isShow: boolean) => {
   }
 }
 
-const updateTaxDom = (cartTotal: number) => setTaxDom(calcTax(cartTotal))
-const setCartTotalDom = (total: number) => {}
-
+const updateTaxDom = (cartTotal: number): void => setTaxDom(calcTax(cartTotal))
+const setCartTotalDom = (total: number): void => {}
