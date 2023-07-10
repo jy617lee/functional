@@ -41,3 +41,4 @@ const showFreeShippingIcon = (button: any, isShow: boolean): void => {
 }
 
 const setCartTotalDom = (total: number): void => {}
+const setTaxDom = (tax: number): void => {}
