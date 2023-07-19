@@ -19,7 +19,7 @@ const FREE_SHIPPING_THRESHOLD = 20;
 
 let shoppingCart: Cart = [];
 
-function addItemToCart(name: string, price: number): void {
+export function addItemToCart(name: string, price: number): void {
   const item = makeCartItem(name, price);
   shoppingCart = addItem(shoppingCart, item);
   const total = calcTotal(shoppingCart);
@@ -86,3 +86,5 @@ function setTaxDom(tax: number): void {}
 function setFreeShippingIcon(button: BuyButton, isShown: boolean): void {
   isShown ? button.showFreeShippingIcon() : button.hideFreeShippingIcon();
 }
+
+("feat: 지난 5장까지의 코드");
