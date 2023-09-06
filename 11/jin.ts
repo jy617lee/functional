@@ -75,6 +75,66 @@ namespace Jin {
 
     // p.244
    
-    }
+    // 1
+    const withArrayCopy: <T>(array: Array<T>, modify: (copy: Array<T>) => void) => Array<T> = <T>(
+      array: Array<T>,
+      modify: (copy: Array<T>) => void
+    ) => {
+      const copy = structuredClone(array);
+      modify(copy);
+      return copy;
+    };
+    
+    const push = <T>(array: Array<T>, elem: T) => withArrayCopy(array, (copy) => copy.push(elem));
+    const dropLast = <T>(array: Array<T>) => withArrayCopy(array, (copy) => copy.pop());
+    const dropFirst = <T>(array: Array<T>) => withArrayCopy(array, (copy) => copy.shift());
+    
+    // 2
+    const withObjectCopy = <K extends string, T>(object: Record<K, T>, modify: (copy: Record<K, T>) => void) => {
+      const copy = structuredClone(object);
+      modify(copy);
+      return copy;
+    };
+    
+    const objectSet = <K extends string, T>(object: Record<K, T>, key: K, value: T) =>
+      withObjectCopy(object, (copy) => (copy[key] = value));
+    const objectDelete = <K extends string, T>(object: Record<K, T>, key: K) =>
+      withObjectCopy(object, (copy) => delete copy[key]);
+
+
+    const tryCatch = async (func: () => Promise<any>, errorHandler: (e: any) => any) => {
+        try {
+            return await func();
+        } catch (e) {
+            return errorHandler(e);
+        }
+    };
+
+    //4
+    const when = (isOK: boolean, callback: () => any) => {
+        if (isOK) {
+            return callback();
+        }
+    };
+
+    //5
+    const IF = (isOk: boolean, callback: () => any, defaultAction: () => any) => {
+        if (isOk) {
+            return callback();
+        }
+        return defaultAction();
+    };
+
+    const wrapIgnoreError = <P extends readonly any[], R>(func: (...params: P) => R) => {
+        return  (...params: P) => {
+            try {
+                return func(...params);
+            } catch (e) {
+                // eat error
+                return null;
+            }
+        };
+    };
+}
   
   
