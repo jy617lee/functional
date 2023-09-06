@@ -81,4 +81,108 @@ namespace Base {
   };
 }
 
+// 11장 연습문제 1
 
+function withArrayCopy<T>(array: T[], modify: (copy: T[]) => void): T[] {
+  const copy = array.slice();
+  modify(copy);
+  return copy;
+}
+
+// push 함수에 적용
+function push<T>(array: T[], elem: T): T[] {
+  return withArrayCopy(array, copy => {
+    copy.push(elem);
+  });
+}
+
+// drop last 함수
+function drop_last<T>(array: T[], elem: T): T[] {
+  return withArrayCopy(array, copy => {
+    copy.pop();
+  });
+}
+
+// 함수 drop last 함수
+function drop_first<T>(array: T[], elem: T): T[] {
+  return withArrayCopy(array, copy => {
+    copy.shift();
+  });
+}
+
+function withObjectCopy<T>(object: T, modify: (copy: T) => void): T {
+    const copy = Object.assign({}, object);
+    modify(copy);
+    return copy;
+}
+
+// 연습문제 try/catch
+function tryCatch(tryBlock: () => void, catchBlock: (error: any) => void): void {
+    try {
+        tryBlock();
+    } catch (error) {
+        catchBlock(error);
+    }
+}
+
+// 사용 예시
+tryCatch(
+    () => {
+        sendEmail();
+    },
+    (error) => {
+        logToSnapErrors(error);
+    }
+);
+
+
+function when(test: boolean, then: () => void): void {
+    if (test) {
+        then();
+    }
+}
+
+function IF<T>(test: boolean, then: () => T, ELSE: () => T): T {
+    if (test) {
+        return then();
+    } else {
+        return ELSE();
+    }
+}
+
+function IgnoreErrors<T>(func: (...args: any[]) => T, ...args: any[]): T | null {
+    try {
+        const result = func(...args);
+        return result;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+const makeAdder = (numberToAdd: number) => (number: number) => number + numberToAdd;
+
+
+interface Customer {
+  firstName: string;
+  lastName: string;
+  address: string;
+}
+
+const customers: Customer[] = [
+  { firstName: 'John', lastName: 'Doe', address: '123 Main St' },
+  { firstName: 'Jane', lastName: 'Smith', address: '456 Elm St' },
+];
+
+// const postcards: Customer[] = customers.map(customer => ({
+//   firstName: customer.firstName,
+//   lastName: customer.lastName,
+//   address: customer.address
+// }));
+
+const postcards: Customer[] = customers.map(({ firstName, lastName, address }) => ({
+  firstName,
+  lastName,
+  address
+}));

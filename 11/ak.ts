@@ -84,4 +84,104 @@ namespace Base {
       f(array[i])
     }
   }
+
+  // withArrayCopy()
+  function withArrayCopy<T>(array: T[], operation: (array: T[])=>void): T[] {
+    const copy = [...array]
+    operation(copy)
+    return copy
+  }
+
+  // const mod = [...arr, value]
+  function push<T>(array: T[], value: T): T[] {
+    return withArrayCopy(array, array => array.push(value))
+  }
+
+  // const mod = arr.slice(0, arr.length - 1)
+  function drop<T>(array: T[]): T[] {
+    return withArrayCopy(array, array => array.pop())
+  }
+
+  // const mod = arr.slice(1)
+  function shift<T>(array: T[]): T[] {
+    return withArrayCopy(array, array => array.shift())
+  }
+
+  // withObjectCopy()
+  function withObjectCopy<T>(obj: T, operation: (obj: T)=>void): T {
+    const copy = {...obj}
+    operation(copy)
+    return copy
+  }
+
+  function objectSet<T, K extends keyof T>(obj: T, key: K, value: T[K]): T {
+    return withObjectCopy(obj, obj => obj[key] = value)
+  }
+
+  function objectDelete<T, K extends keyof T>(obj: T, key: K): Omit<T, K> {
+    return withObjectCopy(obj, obj => delete obj[key])
+  }
+
+  // tryCatch
+  function tryCatch<F extends () => R, R, E>(tryer: F, catcher: (e: E) => R): R {
+    try {
+      return tryer()
+    } catch(e) {
+      return catcher(e)
+    }
+  }
+  tryCatch(() => parseInt("1"), () => NaN)
+
+  // when, then, otherwise
+  function when<T>(test: boolean, then: () => T, otherwise: () => T): T {
+    return test ? then() : otherwise()
+  }
+  when(true, () => "YES", () => "NO")
+
+  // withLogging
+  function withLogging(f: () => unknown): void {
+    try {
+      f()
+    } catch(e) {
+      console.log(e)
+    }
+  }
+  function someFunction(s: string): void {}
+
+  withLogging(() => someFunction("hello"))
+  
+  // 맘에 안든다 ㅜㅜㅜㅜ
+  function wrapLogging<A, R>(f: (arg: A) => R): (arg: A) => void {
+    return (arg) => {
+      try {
+        f(arg)
+      } catch(e) {
+        console.log(e)
+      }
+    }
+  }
+  const loggingUpper = wrapLogging(() => {})
+
+  // June
+  // // 연습문제 6
+  // const wrapIgnoreError = <F extends (args: A) => R, A, R>(func: F): (args: A) => R | null => {
+  //   return (args: A): R | null => {
+  //     try {
+  //       return func(args)
+  //     } catch (error) {
+  //       return null
+  //     }
+  //   }
+  // }
+
+  // // 연습문제 7 왜 내꺼만 안보여
+  // const makeAddr = (valueToAdd: number) => (input: number) => input + valueToAdd
+  // const increment = makeAddr(1)
+  // const plus10 = makeAddr(10)
+  // increment(10) // 11
+  // plus10(10) // 20
+
+
 }
+
+
